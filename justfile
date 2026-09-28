@@ -7,8 +7,8 @@ DEV_IMAGE_NAME := "ai-cli-on-a-cob"
 DEV_USER := "alex-ai"
 DEV_UID := `id -u`
 
-GEMINI_CONT_DIR := "gemini-cont"
-OPENCODE_CONT_DIR := "opencode-cont"
+GEMINI_CONT_DIR := ".gemini-cont"
+OPENCODE_CONT_DIR := ".opencode-cont"
 
 PROJECT_DIR := `basename "$PWD"`
 
@@ -20,6 +20,7 @@ _default:
 [group: "host"]
 dev-image-build:
     docker build \
+        -f ai.Dockerfile \
         --no-cache \
         --tag \
         {{DEV_IMAGE_NAME}} . \
@@ -29,6 +30,8 @@ dev-image-build:
 
 [group: "host"]
 dev-run-cont:
+    mkdir -p "$HOME/{{GEMINI_CONT_DIR}}"
+    mkdir -p "$HOME/{{OPENCODE_CONT_DIR}}"
     docker run \
         --name {{PROJECT_DIR}} \
         -ti \
